@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const app = express();
 const port = process.env.PORT || 4000;
 
@@ -35,6 +35,32 @@ async function run() {
     app.get("/myList/:email",async(req,res) => {
         console.log(req.params.email);
         const result=await spotCollection.find({email:req.params.email}).toArray();
+        res.send(result)
+    })
+    app.get("/singleProduct/:id",async(req,res) => {
+        const result = await spotCollection.findOne({
+            _id: new ObjectId(req.params.id),
+        });
+        console.log(result)
+        res.send(result)
+    })
+    app.put("/update/:id",async(req,res) => {
+        const query = {_id:new ObjectId(req.params.id)}
+        const data = {
+            $set:{
+                tourists_spot_name:req.body.tourists_spot_name,
+                country_Name:req.body.country_Name,
+                image:req.body.image,
+                location:req.body.location,
+                seasonality:req.body.seasonality,
+                travel_time:req.body.travel_time,
+                average_cost:req.body.average_cost,
+                totalVisitorsPerYear:req.body.totalVisitorsPerYear,
+                short_description:req.body.short_description,
+            }
+        }
+        const result = await spotCollection.updateOne(query,data);
+        console.log(result)
         res.send(result)
     })
     // // Connect the client to the server	(optional starting in v4.7)
