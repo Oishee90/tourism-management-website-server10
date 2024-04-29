@@ -37,6 +37,11 @@ async function run() {
         const result=await spotCollection.find({email:req.params.email}).toArray();
         res.send(result)
     })
+    app.get("/alltouristspot",async(req,res)=> {
+        const cursor = spotCollection.find();
+        const result = await cursor.toArray()
+        res.send(result)
+    })
     app.get("/singleProduct/:id",async(req,res) => {
         const result = await spotCollection.findOne({
             _id: new ObjectId(req.params.id),
