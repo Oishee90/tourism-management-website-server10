@@ -25,12 +25,18 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     const spotCollection = client.db("spotStore").collection('tourist');
+    const countryCollection = client.db("spotStore").collection('country') 
 
 
     app.post("/addtourist", async(req, res)=>{
         console.log(req.body)
         const result=await spotCollection.insertOne(req.body)
         console.log(result)
+        res.send(result)
+    })
+    app.get("/country",async(req,res)=> {
+        const cursor = countryCollection.find();
+        const result = await cursor.toArray()
         res.send(result)
     })
     app.get("/myList/:email",async(req,res) => {
