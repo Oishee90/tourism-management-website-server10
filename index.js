@@ -6,7 +6,8 @@ const app = express();
 const port = process.env.PORT || 4000;
 
 // middleware
-app.use(cors());
+app.use(cors({
+    origin:["http://localhost:5175","https://tourism-management-websi-a73be.web.app"]}));
 app.use(express.json());
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.4b5mrxj.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
